@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.easychatbackend.mapper.UserContactApplyMapper">
+  <resultMap id="BaseResultMap" type="com.example.easychatbackend.entity.po.UserContactApply">
+    <id column="apply_id" jdbcType="INTEGER" property="applyId" />
+    <result column="apply_user_id" jdbcType="VARCHAR" property="applyUserId" />
+    <result column="receiver_user_id" jdbcType="VARCHAR" property="receiverUserId" />
+    <result column="contact_type" jdbcType="BIT" property="contactType" />
+    <result column="contact_id" jdbcType="VARCHAR" property="contactId" />
+    <result column="last_apply_time" jdbcType="BIGINT" property="lastApplyTime" />
+    <result column="status" jdbcType="BIT" property="status" />
+    <result column="apply_info" jdbcType="VARCHAR" property="applyInfo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    apply_id, apply_user_id, receiver_user_id, contact_type, contact_id, last_apply_time, 
+    status, apply_info
+  </sql>
+  <select id="selectByExample" parameterType="com.example.easychatbackend.entity.po.UserContactApplyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_contact_apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_contact_apply
+    where apply_id = #{applyId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_contact_apply
+    where apply_id = #{applyId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.example.easychatbackend.entity.po.UserContactApplyExample">
+    delete from user_contact_apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.example.easychatbackend.entity.po.UserContactApply">
+    insert into user_contact_apply (apply_id, apply_user_id, receiver_user_id, 
+      contact_type, contact_id, last_apply_time, 
+      status, apply_info)
+    values (#{applyId,jdbcType=INTEGER}, #{applyUserId,jdbcType=VARCHAR}, #{receiverUserId,jdbcType=VARCHAR}, 
+      #{contactType,jdbcType=BIT}, #{contactId,jdbcType=VARCHAR}, #{lastApplyTime,jdbcType=BIGINT}, 
+      #{status,jdbcType=BIT}, #{applyInfo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.easychatbackend.entity.po.UserContactApply">
+    insert into user_contact_apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="applyId != null">
+        apply_id,
+      </if>
+      <if test="applyUserId != null">
+        apply_user_id,
+      </if>
+      <if test="receiverUserId != null">
+        receiver_user_id,
+      </if>
+      <if test="contactType != null">
+        contact_type,
+      </if>
+      <if test="contactId != null">
+        contact_id,
+      </if>
+      <if test="lastApplyTime != null">
+        last_apply_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="applyInfo != null">
+        apply_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="applyId != null">
+        #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="applyUserId != null">
+        #{applyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverUserId != null">
+        #{receiverUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="contactType != null">
+        #{contactType,jdbcType=BIT},
+      </if>
+      <if test="contactId != null">
+        #{contactId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastApplyTime != null">
+        #{lastApplyTime,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="applyInfo != null">
+        #{applyInfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.example.easychatbackend.entity.po.UserContactApplyExample" resultType="java.lang.Long">
+    select count(*) from user_contact_apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update user_contact_apply
+    <set>
+      <if test="record.applyId != null">
+        apply_id = #{record.applyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.applyUserId != null">
+        apply_user_id = #{record.applyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverUserId != null">
+        receiver_user_id = #{record.receiverUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactType != null">
+        contact_type = #{record.contactType,jdbcType=BIT},
+      </if>
+      <if test="record.contactId != null">
+        contact_id = #{record.contactId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastApplyTime != null">
+        last_apply_time = #{record.lastApplyTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=BIT},
+      </if>
+      <if test="record.applyInfo != null">
+        apply_info = #{record.applyInfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update user_contact_apply
+    set apply_id = #{record.applyId,jdbcType=INTEGER},
+      apply_user_id = #{record.applyUserId,jdbcType=VARCHAR},
+      receiver_user_id = #{record.receiverUserId,jdbcType=VARCHAR},
+      contact_type = #{record.contactType,jdbcType=BIT},
+      contact_id = #{record.contactId,jdbcType=VARCHAR},
+      last_apply_time = #{record.lastApplyTime,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=BIT},
+      apply_info = #{record.applyInfo,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.easychatbackend.entity.po.UserContactApply">
+    update user_contact_apply
+    <set>
+      <if test="applyUserId != null">
+        apply_user_id = #{applyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverUserId != null">
+        receiver_user_id = #{receiverUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="contactType != null">
+        contact_type = #{contactType,jdbcType=BIT},
+      </if>
+      <if test="contactId != null">
+        contact_id = #{contactId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastApplyTime != null">
+        last_apply_time = #{lastApplyTime,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="applyInfo != null">
+        apply_info = #{applyInfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where apply_id = #{applyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.easychatbackend.entity.po.UserContactApply">
+    update user_contact_apply
+    set apply_user_id = #{applyUserId,jdbcType=VARCHAR},
+      receiver_user_id = #{receiverUserId,jdbcType=VARCHAR},
+      contact_type = #{contactType,jdbcType=BIT},
+      contact_id = #{contactId,jdbcType=VARCHAR},
+      last_apply_time = #{lastApplyTime,jdbcType=BIGINT},
+      status = #{status,jdbcType=BIT},
+      apply_info = #{applyInfo,jdbcType=VARCHAR}
+    where apply_id = #{applyId,jdbcType=INTEGER}
+  </update>
+</mapper>

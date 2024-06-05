@@ -1,0 +1,62 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/eazy_chat?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 1234
+    hikari:
+      auto-commit: true
+      maximum-pool-size: 10             #?????,???10.
+      minimum-idle: 5                   #??????????10.
+      idle-timeout: 180000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: select 1   #??????
+      pool-name: HikariPDatasource
+
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+  web:
+    resources:
+      add-mappings: false
+
+  data:
+    redis:
+      timeout: 2000
+      jedis:
+        pool:
+          max-active: 20
+          max-wait: -1
+          max-idle: 10
+          min-idle: 0
+
+server:
+  port: 8710
+  servlet:
+    context-path: /api
+  reactive:
+    session:
+      timeout: PT60M
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+
+
+#?????
+project:
+  folder: d:/MyCodes/EzChat/
+
+log:
+  root:
+    level: info
+
+ws:
+  port: 5051
+
+admin:
+  email: Yomiger@163.com
+
+dev: false
