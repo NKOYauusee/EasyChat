@@ -13,4 +13,5 @@ public interface UserContactService {
     Integer deleteContact(String fromID,String searchContactId);
 
     void applyNewFriend(TokenUserInfoDto userInfoDto, String contactId, String applyInfo) throws BusinessException;
+
 }

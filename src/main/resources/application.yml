@@ -47,7 +47,7 @@ mybatis:
 
 #?????
 project:
-  folder: d:/MyCodes/EzChat/
+  folder: d:/MyCodes/EasyChatBackend/
 
 log:
   root:

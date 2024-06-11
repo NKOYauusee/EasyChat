@@ -4,9 +4,11 @@ package com.example.easychatbackend.controller;
 import com.example.easychatbackend.annotation.GlobalInterceptor;
 import com.example.easychatbackend.entity.dto.TokenUserInfoDto;
 import com.example.easychatbackend.entity.dto.UserContactSearchResultDto;
+import com.example.easychatbackend.entity.enums.UserContackTypeEnum;
 import com.example.easychatbackend.entity.vo.ResponseVo;
 import com.example.easychatbackend.exception.BusinessException;
 import com.example.easychatbackend.mapper.UserInfoMapper;
+import com.example.easychatbackend.service.UserContactApplyService;
 import com.example.easychatbackend.service.UserContactService;
 import com.example.easychatbackend.utils.RedisService;
 import jakarta.annotation.Resource;
@@ -23,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserContactController {
     @Resource
     UserContactService userContactService;
+
+    @Resource
+    UserContactApplyService userContactApplyService;
 
     @Resource
     RedisService redisService;
@@ -49,7 +54,10 @@ public class UserContactController {
 
     @RequestMapping("/add")
     @GlobalInterceptor
-    public ResponseVo addContact(HttpServletRequest request, @NotEmpty String contactID, String applyInfo) throws BusinessException {
+    public ResponseVo addContact(
+            HttpServletRequest request,
+            @NotEmpty String contactID,
+            String applyInfo) throws BusinessException {
         TokenUserInfoDto userInfoDto = getTokenUserInfoDto(request);
 
         userContactService.applyNewFriend(userInfoDto, contactID, applyInfo);
@@ -57,6 +65,21 @@ public class UserContactController {
         return ResponseVo.success("已发送申请", null);
     }
 
+    @RequestMapping("/apply")
+    public ResponseVo applyContact(HttpServletRequest request,
+                                   @NotEmpty String applyId,
+                                   @NotEmpty String contactID){
+        TokenUserInfoDto userInfoDto = getTokenUserInfoDto(request);
+
+        userContactApplyService.addApply(
+                applyId,
+                userInfoDto.getUserId(),
+                contactID,
+                UserContackTypeEnum.getByPrefix(contactID).getType()
+                );
+
+        return ResponseVo.info("添加成功");
+    }
 
     public TokenUserInfoDto getTokenUserInfoDto(HttpServletRequest request) {
         String token = request.getHeader("token");

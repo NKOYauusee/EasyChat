@@ -90,7 +90,7 @@ public class UserContactServiceImpl implements UserContactService {
     public void applyNewFriend(TokenUserInfoDto userInfoDto, String contactId, String applyInfo) throws BusinessException {
         //不能向自己申请
         if (userInfoDto.getUserId().equals(contactId))
-            throw new BusinessException("不能自己为好友");
+            throw new BusinessException("不能添加自己为好友");
 
         UserContackTypeEnum typeEnum = UserContackTypeEnum.getByPrefix(contactId);
         if (typeEnum == null) {
@@ -101,6 +101,14 @@ public class UserContactServiceImpl implements UserContactService {
         String receiver_id = "";
 
         if (typeEnum.equals(UserContackTypeEnum.GROUP)) {
+            UserContactExample userContactExample = new UserContactExample();
+            userContactExample.createCriteria()
+                    .andUserIdEqualTo(userInfoDto.getUserId())
+                    .andContactIdEqualTo(contactId);
+            if (!userContactMapper.selectByExample(userContactExample).isEmpty())
+                throw new BusinessException("已在好友列表中");
+
+
             GroupInfoExample groupInfoExample = new GroupInfoExample();
             groupInfoExample.createCriteria().andGroupIdEqualTo(contactId);
 
@@ -114,21 +122,21 @@ public class UserContactServiceImpl implements UserContactService {
         } else {
             //TODO 理应判断对方的好友申请状态
 
-            receiver_id =contactId;
+            receiver_id = contactId;
         }
         //添加申请表信息
 
-        String senderID = userInfoDto.getUserId();
-
-        Long curDate = System.currentTimeMillis();
-
+        String senderID = userInfoDto.getUserId();   //ApplyId
+        Long curDate = System.currentTimeMillis();   //last_apply_time
 
 
         UserContactApplyExample contactApplyExample = new UserContactApplyExample();
         contactApplyExample.createCriteria().andApplyUserIdEqualTo(senderID).andReceiverUserIdEqualTo(receiver_id);
 
         //判断是否已经申请
-        if (contactApplyMapper.selectByExample(contactApplyExample).isEmpty()){
+
+        //不存在
+        if (contactApplyMapper.selectByExample(contactApplyExample).isEmpty()) {
             UserContactApply userContactApply = new UserContactApply();
 
             userContactApply.setApplyUserId(senderID); //申请人
@@ -136,9 +144,12 @@ public class UserContactServiceImpl implements UserContactService {
             userContactApply.setContactId(contactId);
             userContactApply.setLastApplyTime(curDate);
             userContactApply.setApplyInfo(applyInfo);
+            userContactApply.setContactType(typeEnum.getType() == 1);
+
             contactApplyMapper.insert(userContactApply);
         }
-        else{
+        //存在
+        else {
             UserContactApply userContactApply = contactApplyMapper.selectByExample(contactApplyExample).get(0);
 
             userContactApply.setLastApplyTime(curDate);
