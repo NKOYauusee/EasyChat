@@ -6,12 +6,12 @@ spring:
     password: 1234
     hikari:
       auto-commit: true
-      maximum-pool-size: 10             #?????,???10.
-      minimum-idle: 5                   #??????????10.
+      maximum-pool-size: 10
+      minimum-idle: 5
       idle-timeout: 180000
       max-lifetime: 1800000
       connection-timeout: 30000
-      connection-test-query: select 1   #??????
+      connection-test-query: select 1
       pool-name: HikariPDatasource
 
   servlet:
@@ -44,8 +44,7 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
 
 
-
-#?????
+#自定义属性
 project:
   folder: d:/MyCodes/EasyChatBackend/
 

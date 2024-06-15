@@ -63,26 +63,25 @@ public class HandlerWebSocket extends SimpleChannelInboundHandler<TextWebSocketF
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
-            WebSocketServerProtocolHandler.HandshakeComplete handler = (WebSocketServerProtocolHandler.HandshakeComplete) evt;
+            if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete handler) {
 
-            String uri = handler.requestUri();
-            String token = getToken(uri);
-            if (token == null) {
-                logger.info("no Token...");
-                ctx.close();
-                return;
+                String uri = handler.requestUri();
+                String token = getToken(uri);
+                if (token == null) {
+                    logger.info("no Token...");
+                    ctx.close();
+                    return;
+                }
+
+                TokenUserInfoDto userInfoDto = redisService.getUserInfoFromToken(token);
+                if (userInfoDto == null) {
+                    logger.info("Wrong Token");
+                    ctx.close();
+                    return;
+                }
+
+                contextUtils.addContext(userInfoDto.getUserId(), ctx.channel());
             }
-
-            TokenUserInfoDto userInfoDto = redisService.getUserInfoFromToken(token);
-            if (userInfoDto == null) {
-                logger.info("Wrong Token");
-                ctx.close();
-                return;
-            }
-
-            contextUtils.addContext(userInfoDto.getUserId(), ctx.channel());
-        }
 
     }
 

@@ -33,7 +33,6 @@ public class ChannelContextUtils {
         String channelId = channel.id().toString();
         logger.info(" >>>> CHANNEL ID: " + channelId);
         AttributeKey attributeKey = null;
-
         if (!attributeKey.exists(channelId)) {
             attributeKey = AttributeKey.newInstance(channelId);
         } else {

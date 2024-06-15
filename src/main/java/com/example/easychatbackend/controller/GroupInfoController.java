@@ -28,7 +28,7 @@ public class GroupInfoController {
     /**
      *  创建和修改群组信息接口
      */
-    @GlobalInterceptor
+    @   GlobalInterceptor
     @RequestMapping("/saveGroup")
     public ResponseVo saveGroup(
             HttpServletRequest request,
