@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/eazy_chat?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: 1234
+    username: username
+    password: password
     hikari:
       auto-commit: true
       maximum-pool-size: 10
